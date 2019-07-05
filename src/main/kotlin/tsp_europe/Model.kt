@@ -245,25 +245,6 @@ enum class SearchStrategy {
         }
     },
 
-    REMOVE_OVERLAPS {
-        override fun execute() {
-            animationQueue.clear()
-            SearchStrategy.RANDOM.execute()
-            animationQueue += SearchStrategy.RANDOM.animationQueue
-
-            repeat(10) {
-                Model.intersectConflicts.forEach { (x, y) ->
-                    x.attemptTwoSwap(y)?.animate()?.also {
-                        animationQueue += it
-                    }
-                }
-            }
-            Model.distanceProperty.set(Model.totalDistance)
-            Model.bestDistanceProperty.set(Model.totalDistance)
-
-            saveResult()
-        }
-    },
     HILL_CLIMBING {
         override fun execute() {
             animationQueue.clear()
