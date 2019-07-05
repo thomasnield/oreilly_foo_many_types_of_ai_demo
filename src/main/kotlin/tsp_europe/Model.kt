@@ -287,7 +287,7 @@ enum class SearchStrategy {
             val tempSchedule = sequenceOf(
                         generateSequence(80.0) { t -> (t - .05) }.takeWhile { it >= 50 },
                         generateSequence(50.0) { t -> (t + .05) }.takeWhile { it <= 120 },
-                        generateSequence(120.0) { t -> (t - .005) }.takeWhile { it >= 30 }
+                        generateSequence(120.0) { t -> (t - .05) }.takeWhile { it >= 0 }
                     ).flatMap { it }
 
             tempSchedule.forEach { temperature ->

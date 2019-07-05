@@ -45,6 +45,16 @@ class TSPView: View() {
                             borderpane {
                                 val disablePlayButton = SimpleBooleanProperty(true)
 
+                                fun playAnimation() {
+                                    backingList.clear()
+                                    Model.reset()
+                                    ss.animationQueue.play()
+                                    ss.savedEdges
+                                            .map { Edge(it.startCity).apply { startCity = it.startCity; endCity = it.endCity } }
+                                            .forEach {
+                                                backingList += it
+                                            }
+                                }
                                 center = button(ss.name.replace("_", " ")) {
                                     useMaxWidth = true
 
@@ -54,6 +64,7 @@ class TSPView: View() {
                                         backingList.clear()
                                         backingList.setAll(Model.edges)
                                         disablePlayButton.set(false)
+                                        playAnimation()
                                     }
                                 }
                                 right = button("\u25B6") {
@@ -61,14 +72,7 @@ class TSPView: View() {
                                     disableProperty().bind(disablePlayButton)
 
                                     setOnAction {
-                                        backingList.clear()
-                                        Model.reset()
-                                        ss.animationQueue.play()
-                                        ss.savedEdges
-                                                .map { Edge(it.startCity).apply { startCity = it.startCity; endCity = it.endCity } }
-                                                .forEach {
-                                                    backingList += it
-                                                }
+                                        playAnimation()
                                     }
                                 }
                             }
