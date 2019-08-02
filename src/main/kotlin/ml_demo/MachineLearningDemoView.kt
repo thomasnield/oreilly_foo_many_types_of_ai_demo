@@ -1,4 +1,3 @@
-import javafx.application.Application
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Insets
@@ -9,7 +8,6 @@ import javafx.scene.layout.CornerRadii
 import javafx.scene.paint.Color
 import javafx.scene.text.FontWeight
 import tornadofx.*
-
 
 
 class MachineLearningDemoView: View() {
@@ -30,69 +28,19 @@ class MachineLearningDemoView: View() {
 
             borderpane {
 
-                top = label("TRAIN") {
+                top = label("TRAINING DATA") {
                     style {
                         textFill =  Color.RED
                         fontWeight = FontWeight.BOLD
                     }
                 }
 
-                center = form {
-                    fieldset {
-
-                        field("Which looks better?").hbox {
-                            button("DARK") {
-                                textFill = Color.BLACK
-                                useMaxWidth = true
-
-                                backgroundProperty().bind(
-                                        backgroundColor.select { ReadOnlyObjectWrapper(Background(BackgroundFill(it, CornerRadii.EMPTY, Insets.EMPTY))) }
-                                )
-
-                                setOnAction {
-
-                                    PredictorModel += LabeledColor(backgroundColor.get(), FontShade.DARK)
-                                    assignRandomColor()
-                                }
-                            }
-
-                            button("LIGHT") {
-                                textFill = Color.WHITE
-                                useMaxWidth = true
-
-                                backgroundProperty().bind(
-                                        backgroundColor.select { ReadOnlyObjectWrapper(Background(BackgroundFill(it, CornerRadii.EMPTY, Insets.EMPTY))) }
-                                )
-
-                                setOnAction {
-                                    PredictorModel += LabeledColor(backgroundColor.get(), FontShade.DARK)
-
-                                    assignRandomColor()
-                                }
-                            }
-                        }
-                    }
-
-                    fieldset {
-                        field("Model") {
-                            combobox(PredictorModel.selectedPredictor) {
-
-                                PredictorModel.Predictor.values().forEach { items.add(it) }
-                            }
-                        }
-                    }
-
-                    fieldset {
-                        field("Pre-Train") {
-                            button("Train 1345 Colors") {
-                                useMaxWidth = true
-                                setOnAction {
-                                    PredictorModel.preTrainData()
-                                    isDisable = true
-                                }
-                            }
-                        }
-                    }
+                center = tableview(PredictorModel.inputs) {
+                    readonlyColumn("Color", LabeledColor::label)
+                    readonlyColumn("Red", LabeledColor::red)
+                    readonlyColumn("Green", LabeledColor::green)
+                    readonlyColumn("Blue", LabeledColor::blue)
+                    readonlyColumn("Output", LabeledColor::outputValue)
                 }
 
             }
@@ -108,6 +56,15 @@ class MachineLearningDemoView: View() {
 
                 center = form {
                     fieldset {
+                        field("Model") {
+                            combobox(PredictorModel.selectedPredictor) {
+
+                                PredictorModel.Predictor.values().forEach { items.add(it) }
+                            }
+                        }
+                    }
+                    fieldset {
+
                         field("Background") {
                             colorpicker {
                                 valueProperty().onChange {
@@ -136,5 +93,14 @@ class MachineLearningDemoView: View() {
                 }
             }
         }
+
+        label("""This is a simple machine learning demo to train and predict a light/dark font for a given background color.
+            |
+            |There are many ways to do this, from logistic regressions and decision trees to neural networks. All of these 
+            |machine learning algorithms were written from scratch, and trained with hill climbing or simulated annealing 
+            |rather than gradient descent. 
+            |
+            |Play with a few of these algorithms and use the right panel to predict a light or dark font! 
+        """.trimMargin())
     }
 }

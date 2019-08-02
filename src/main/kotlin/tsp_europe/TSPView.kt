@@ -1,7 +1,7 @@
-import javafx.application.Application
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
+import javafx.scene.control.Alert
 import javafx.scene.image.Image
 import javafx.scene.paint.Color
 import tornadofx.*
@@ -48,6 +48,13 @@ class TSPView: View() {
                                 fun playAnimation() {
                                     backingList.clear()
                                     Model.reset()
+
+                                    alert(type=Alert.AlertType.INFORMATION,
+                                            header = ss.name.replace("_", " "),
+                                            content = ss.description,
+                                            title = "Traveling Salesman Problem",
+                                            owner = this@TSPView.primaryStage)
+
                                     ss.animationQueue.play()
                                     ss.savedEdges
                                             .map { Edge(it.startCity).apply { startCity = it.startCity; endCity = it.endCity } }

@@ -24,6 +24,7 @@ class SudokuView : View() {
                 field {
                     combobox(property = GridModel.selectedSolverProperty) {
                         items.setAll(Solver.values().asList())
+                        useMaxWidth = true
                     }
                 }
             }
@@ -45,6 +46,23 @@ class SudokuView : View() {
                 }
                 field {
                     label(GridModel.statusProperty)
+                }
+            }
+            fieldset {
+                field {
+                    label("""Solving a Sudoku has a surprising 
+number of applications for real-world 
+optimization problems. Consider scheduling 
+staff workers or classrooms. You want to 
+arrange them in a way to achieve constraints 
+and an objective. But you only have so many 
+slots and so much capacity.
+
+Discrete optimization techniques like tree 
+search and branch-and-prune can be used to 
+solve these types of problems. By leveraging 
+some linear programming as well, these 
+problems can be solved even more efficiently.""")
                 }
             }
         }

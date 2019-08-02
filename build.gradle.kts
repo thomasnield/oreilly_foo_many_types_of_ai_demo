@@ -11,6 +11,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("no.tornado:tornadofx:1.7.19")
     implementation("org.nield:kotlin-statistics:1.2.1")
+    compile("org.ojalgo:okalgo:0.0.2")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

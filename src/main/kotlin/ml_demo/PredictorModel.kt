@@ -1,10 +1,13 @@
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
+import javafx.scene.control.Label
 import javafx.scene.paint.Color
+import javafx.scene.text.FontWeight
 import org.apache.commons.math3.distribution.NormalDistribution
 import org.nield.kotlinstatistics.countBy
 import org.nield.kotlinstatistics.random
 import org.nield.kotlinstatistics.randomFirst
+import tornadofx.style
 import java.net.URL
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.exp
@@ -15,7 +18,7 @@ object PredictorModel {
 
     val inputs = FXCollections.observableArrayList<LabeledColor>()
 
-    val selectedPredictor = SimpleObjectProperty<Predictor>(Predictor.DECISION_TREE)
+    val selectedPredictor = SimpleObjectProperty(Predictor.DECISION_TREE)
 
     fun predict(color: Color) = selectedPredictor.get().predict(color)
 
@@ -27,6 +30,8 @@ object PredictorModel {
         inputs += categorizedInput.let { LabeledColor(it.first, it.second) }
         Predictor.values().forEach { it.retrainFlag = true }
     }
+
+    init { preTrainData() }
 
     fun preTrainData() {
 
@@ -517,7 +522,21 @@ object PredictorModel {
 data class LabeledColor(
         val color: Color,
         val fontShade: FontShade
-)
+) {
+    val red get() = color.red * 255.0
+    val green get() = color.green * 255.0
+    val blue get() = color.blue * 255.0
+
+    val outputValue get() = fontShade.intValue
+
+    val label get() = Label(fontShade.toString()).apply {
+        style {
+            textFill =  fontShade.color
+            backgroundColor += color
+            fontWeight = FontWeight.BOLD
+        }
+    }
+}
 
 enum class FontShade(val color: Color, val intValue: Double, val outputArray: DoubleArray){
     DARK(Color.BLACK, 1.0, doubleArrayOf(0.0, 1.0)),

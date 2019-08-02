@@ -10,7 +10,7 @@ object GridModel {
     var status by statusProperty
 
     // the current selected algorithm implementation
-    val selectedSolverProperty = SimpleObjectProperty(Solver.TOMS_BRANCH_AND_BOUND)
+    val selectedSolverProperty = SimpleObjectProperty(Solver.TOMS_BRANCH_AND_PRUNE)
     var selecteSolver by selectedSolverProperty
 
     // generates the entire Sudoku grid of GridCells

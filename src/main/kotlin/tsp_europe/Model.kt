@@ -194,6 +194,10 @@ object Model {
 enum class SearchStrategy {
 
     RANDOM {
+
+        override val description = """Nothing special about this algorithm. It simply generates a random itinerary so it obviously will not yield a good solution. However, generating a random itinerary serves as a great starting point for other metaheuristics algorithms like hill climbing and simulated annealing. 
+        """
+
         override fun execute() {
             animationQueue.clear()
 
@@ -221,6 +225,12 @@ enum class SearchStrategy {
     },
 
     GREEDY {
+
+        override val description = """Using a basic greedy algorithm may seem like a good idea at first. It entails starting a random point and then jumping to the next closest point, and then the next closest point. 
+            
+This will backfire for non-trivial traveling salemsan problems as it avoids points that are far away, and then cause inevitable overlaps in the itinerary indicating a poor solution. 
+        """
+
         override fun execute() {
             animationQueue.clear()
             val capturedCities = mutableSetOf<Int>()
@@ -246,6 +256,13 @@ enum class SearchStrategy {
     },
 
     HILL_CLIMBING {
+        override val description = """This simple algorithm is foundational to many optimization algorithms, from simulated annealing to gradient descent. 
+            
+For thousands to millions of iterations, hill climbing will make a random change to a starting solution. If that results in an improvement, we will keep it. We do this repeatedly for a fixed number of iterations and/or until the solution cannot improve anymore. 
+            
+The main downside with hill climbing is it is very greedy, and will gravitate to the first local minimum it can find. 
+        """.trimIndent()
+
         override fun execute() {
             animationQueue.clear()
             SearchStrategy.RANDOM.execute()
@@ -274,6 +291,13 @@ enum class SearchStrategy {
     },
 
     SIMULATED_ANNEALING {
+
+        override val description = """Simulated annealing is a powerful algorithm similar to hill-climbing, but it occasionally allows inferior moves hoping to find a superior solution. It can be used to optimize a wide range of problems, from the Traveling Salesman Problem to optimizing a neural network. 
+            
+To solve the traveling salesman problem, it will randomly swap two edges. If that results in an improvement, it will keep it. If it worsens the solution, it will use a "temperature schedule" and a random coin flip to determine whether to keep the random move or not. 
+            
+The "temperature schedule" throttles the probability of accepting an inferior move, and it will fluctuate up and down. 
+        """
 
         override fun execute() {
             animationQueue.clear()
@@ -445,6 +469,7 @@ enum class SearchStrategy {
         }
     }
     abstract fun execute()
+    abstract val description: String
 }
 
 class SavedEdge(val startCity: City, val endCity: City) {

@@ -1,8 +1,12 @@
 import javafx.application.Platform
+import org.ojalgo.okalgo.expression
+import org.ojalgo.okalgo.expressionsbasedmodel
+import org.ojalgo.okalgo.variable
+import org.ojalgo.optimisation.Variable
 
 enum class Solver {
 
-    TOMS_BRANCH_AND_BOUND {
+    TOMS_BRANCH_AND_PRUNE {
 
         // A branch-and-bound algorithm
         inner class GridCellBranch(val selectedValue: Int,
@@ -98,8 +102,8 @@ enum class Solver {
 
             Platform.runLater { GridModel.status = if (solution == null) "INFEASIBLE" else "FEASIBLE" }
         }
-    }/*,
-    OJALGO {
+    },
+    OJALGO_LINEAR_PROGRAMMING {
 
         inner class TripletKey(val i1: Int, val i2: Int, val i3: Int)
 
@@ -170,7 +174,7 @@ enum class Solver {
                 }
             }
         }
-    }*/;
+    };
 
     override fun toString() = name.replace("_", " ")
     abstract fun solve()
